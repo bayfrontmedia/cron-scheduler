@@ -49,13 +49,13 @@ The constructor accepts two parameters as strings: `$lock_file_path` and `$outpu
 To prevent overlapping jobs, Cron Scheduler creates temporary "lock" files. 
 These files are created for each job once it begins, and deleted once it completes.
 Jobs will be skipped when a lock file exists, even if it is due to run.
-If `$lock_file_path === NULL`, lock files will never be created.
+If `$lock_file_path === NULL`, lock files will never be created, and all jobs will be allowed to overlap.
 
 When an `$output_file` is specified, all output of jobs that run will be saved to this file, unless a custom file is specified specifically for that job (see [output](#output)). 
 
 The constructor may throw a `Bayfront\CronScheduler\FilesystemException` exception.
 
-**Example:**
+**Example `cron.php`:**
 
 ```
 use Bayfront\CronScheduler\Cron;
@@ -83,7 +83,7 @@ try {
 - [output](#output)
 - [when](#when)
 
-Job schedule
+**Job schedule**
 
 - [at](#at)
 - [everyMinutes](#everyminutes)
@@ -217,7 +217,7 @@ Runs all queued jobs that are due.
 
 **Parameters:**
 
-- `$current_time = 'now'` (`DateTimeInterface`): Override current time by passing a DateTime instance with a defined time.
+- `$current_time = 'now'` (`DateTimeInterface`): Override current time by passing a `DateTime` instance with a given time.
 
 **Returns:**
 

@@ -8,7 +8,8 @@
   "keywords": [
     "php",
     "cron",
-    "cron job"
+    "cronjob",
+    "crontab"
   ],
   "authors": [
     {
