@@ -3,7 +3,6 @@
   "description": "A flexible framework agnostic cron job scheduler using human-readable expressions.",
   "homepage": "https://github.com/bayfrontmedia/cron-scheduler",
   "license" : "MIT",
-  "version": "1.0.0",
   "type": "library",
   "keywords": [
     "php",

@@ -447,7 +447,7 @@ class Cron
 
             }
 
-            if (isset($file)) {
+            if (isset($file) && is_string($output) && $output != '') { // If any output to save
 
                 $this->_saveOutputToFile($output, $file);
             }
