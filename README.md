@@ -10,7 +10,7 @@ A flexible framework agnostic cron job scheduler using human-readable expression
 
 ## License
 
-This project is open source and available under the [MIT License](https://github.com/bayfrontmedia/php-array-helpers/blob/master/LICENSE).
+This project is open source and available under the [MIT License](LICENSE).
 
 ## Author
 
