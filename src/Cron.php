@@ -148,6 +148,12 @@ class Cron
     private function _createLockFile(string $file): void
     {
 
+        $dir = rtrim(str_replace(basename($file), '', $file), '/');
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
         $create = file_put_contents($this->_getFullFilename($file), '');
 
         if (false === $create) {
@@ -344,6 +350,12 @@ class Cron
 
     private function _saveOutputToFile($output, string $file): void
     {
+
+        $dir = rtrim(str_replace(basename($file), '', $file), '/');
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
 
         $save = file_put_contents($file, $output, FILE_APPEND);
 
