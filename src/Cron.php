@@ -148,7 +148,7 @@ class Cron
     private function _createLockFile(string $file): void
     {
 
-        $dir = rtrim(str_replace(basename($file), '', $file), '/');
+        $dir = rtrim(str_replace(basename($this->_getFullFilename($file)), '', $this->_getFullFilename($file)), '/');
 
         if (!is_dir($dir)) {
             mkdir($dir, 0755, true);
