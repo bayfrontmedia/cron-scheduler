@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [1.0.3] - 2020.11.24
+
+### Changed
+
+- Changed chmod value to `0664` for any files created using `file_put_contents`.
+
 ## [1.0.2] - 2020.11.24
 
 ### Fixed

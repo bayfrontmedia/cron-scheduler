@@ -162,6 +162,8 @@ class Cron
 
         }
 
+        chmod($file, 0664);
+
     }
 
     /**
@@ -364,6 +366,8 @@ class Cron
             throw new FilesystemException('Unable to save output to file (' . $file . ')');
 
         }
+
+        chmod($file, 0664);
 
     }
 
