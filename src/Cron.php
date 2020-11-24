@@ -162,7 +162,7 @@ class Cron
 
         }
 
-        chmod($file, 0664);
+        chmod($this->_getFullFilename($file), 0664);
 
     }
 

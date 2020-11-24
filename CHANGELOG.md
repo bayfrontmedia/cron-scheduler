@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [1.0.4] - 2020.11.24
+
+- chmod bugfix.
+
 ## [1.0.3] - 2020.11.24
 
 ### Changed
