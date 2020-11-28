@@ -38,6 +38,12 @@ Then, add a new entry to your crontab to run the file every minute:
 * * * * * path/to/php/bin path/to/cron.php 1>> /dev/null 2>&1
 ```
 
+Or, to save anything `echoed` from the jobs to a log file:
+
+```
+* * * * * path/to/php/bin path/to/cron.php 1>> /path/to/backup.log 2>&1
+```
+
 Now, your server will check the file every minute, and Cron Scheduler will only run the jobs that are due, according to their schedule.
 
 ### Creating an instance
@@ -51,7 +57,8 @@ These files are created for each job once it begins, and deleted once it complet
 Jobs will be skipped when a lock file exists, even if it is due to run.
 If `$lock_file_path === NULL`, lock files will never be created, and all jobs will be allowed to overlap.
 
-When an `$output_file` is specified, all output of jobs that run will be saved to this file, unless a custom file is specified specifically for that job (see [output](#output)). 
+When an `$output_file` is specified, anything `returned` from the jobs that run will be saved to this file, unless a custom file is specified specifically for that job (see [output](#output)).
+To save anything `echoed` from the jobs, a log file should be specified in the crontab (see above).
 
 The constructor may throw a `Bayfront\CronScheduler\FilesystemException` exception.
 
