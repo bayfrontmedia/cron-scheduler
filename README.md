@@ -38,10 +38,10 @@ Then, add a new entry to your crontab to run the file every minute:
 * * * * * path/to/php/bin path/to/cron.php 1>> /dev/null 2>&1
 ```
 
-Or, to save anything `echoed` from the jobs to a log file:
+Or, to save anything `echoed` from the jobs to a log file, specify a file path, such as:
 
 ```
-* * * * * path/to/php/bin path/to/cron.php 1>> /path/to/cron_output.log 2>&1
+* * * * * path/to/php/bin path/to/cron.php 1>> /path/to/cron-`date +\%Y-\%m-\%d`.log 2>&1
 ```
 
 Now, your server will check the file every minute, and Cron Scheduler will only run the jobs that are due, according to their schedule.
