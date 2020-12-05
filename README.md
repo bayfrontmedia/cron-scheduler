@@ -456,7 +456,7 @@ try {
 
 **Description:**
 
-Save the output of the last ran job to a given file.
+Save the output of the job to a given file.
 
 This will override `$output_file`, if specified in the constructor.
 
