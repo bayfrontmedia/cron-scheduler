@@ -87,8 +87,8 @@ try {
 - [php](#php)
 - [call](#call)
 - [always](#always)
-- [saveOutput](#saveoutput)
 - [when](#when)
+- [saveOutput](#saveoutput)
 
 **Job schedule**
 
@@ -120,7 +120,6 @@ try {
 - [october](#october)
 - [november](#november)
 - [december](#december)
-
 
 <hr />
 
@@ -373,7 +372,7 @@ By default, the job will run every minute.
 ```
 try {
 
-    $cron->call('job-name', function ($name) {
+    $cron->call('job-name', function($name) {
         return "Hello, " . $name . "\n\n";
     }, [
         'name' => 'John'
@@ -416,36 +415,6 @@ try {
 
 <hr />
 
-### saveOutput
-
-**Description:**
-
-Save the output of the last ran job to a given file.
-
-This will override `$output_file`, if specified in the constructor.
-
-**Parameters:**
-
-- `$output_file` (string)
-
-**Returns:**
-
-- (self)
-
-**Example:**
-
-```
-try {
-
-    $cron->php('job-name', 'path/to/php/file.php')->saveOutput('path/to/save/output.log');
-
-} catch (LabelExistsException $e) {
-    die($e->getMessage());
-}
-```
-
-<hr />
-
 ### when
 
 **Description:**
@@ -468,13 +437,43 @@ The job will only run if the return value of `$callable` is `TRUE`.
 ```
 try {
 
-    $cron->php('job-name', 'path/to/php/file.php')->when(function ($return) {
+    $cron->php('job-name', 'path/to/php/file.php')->when(function($return) {
         
         return $return;
        
     }, [
         'return' => true
     ]);
+
+} catch (LabelExistsException $e) {
+    die($e->getMessage());
+}
+```
+
+<hr />
+
+### saveOutput
+
+**Description:**
+
+Save the output of the last ran job to a given file.
+
+This will override `$output_file`, if specified in the constructor.
+
+**Parameters:**
+
+- `$output_file` (string)
+
+**Returns:**
+
+- (self)
+
+**Example:**
+
+```
+try {
+
+    $cron->php('job-name', 'path/to/php/file.php')->saveOutput('path/to/save/output.log');
 
 } catch (LabelExistsException $e) {
     die($e->getMessage());

@@ -84,7 +84,10 @@ class Cron
         }
 
         try {
-            return CronExpression::factory($this->getJobs()[$label]['at'])->getPreviousRunDate()->format($date_format);
+
+            $cron = new CronExpression($this->getJobs()[$label]['at']);
+
+            return $cron->getPreviousRunDate()->format($date_format);
 
         } catch (Exception $e) {
             throw new SyntaxException('CronExpression error: ' . $e->getMessage(), 0, $e);
@@ -114,7 +117,10 @@ class Cron
         }
 
         try {
-            return CronExpression::factory($this->getJobs()[$label]['at'])->getNextRunDate()->format($date_format);
+
+            $cron = new CronExpression($this->getJobs()[$label]['at']);
+
+            return $cron->getNextRunDate()->format($date_format);
 
         } catch (Exception $e) {
             throw new SyntaxException('CronExpression error: ' . $e->getMessage(), 0, $e);
@@ -211,7 +217,10 @@ class Cron
 
     private function _jobIsDue($current_time, string $at): bool
     {
-        return CronExpression::factory($at)->isDue($current_time);
+
+        $cron = new CronExpression($at);
+
+        return $cron->isDue($current_time);
     }
 
     /**

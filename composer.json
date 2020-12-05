@@ -27,7 +27,7 @@
   "require": {
     "php": ">=7.1.0",
     "bayfrontmedia/php-string-helpers": "^1.0.0",
-    "dragonmantank/cron-expression": "^3.0.1"
+    "dragonmantank/cron-expression": "3.1.*"
   },
   "autoload": {
     "psr-4": {

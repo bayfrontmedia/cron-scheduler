@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Fixed` for any bug fixes.
 - `Security` in case of vulnerabilities
 
+## [1.1.0] - 2020.12.05
+
+### Changed
+
+- Changed `output` method to `saveOutput`.
+- Updated vendor library `dragonmantank/cron-expression` to version `3.1.*`.
+
 ## [1.0.4] - 2020.11.24
 
 ### Fixed
