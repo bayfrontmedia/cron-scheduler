@@ -431,21 +431,25 @@ class Cron
 
             $job_start = time();
 
-            $output = NULL;
+            ob_start(); // Turn on output buffering
 
             if (isset($job['call']) && isset($job['params'])) { // If a callable
 
-                $output = call_user_func_array($job['call'], $job['params']);
+                call_user_func_array($job['call'], $job['params']);
 
             } else if (isset($job['php'])) {
 
-                $output = shell_exec(escapeshellcmd('php ' . $job['php']));
+                shell_exec(escapeshellcmd('php ' . $job['php']));
 
             } else if (isset($job['raw'])) {
 
-                $output = shell_exec(escapeshellcmd($job['raw']));
+                shell_exec(escapeshellcmd($job['raw']));
 
             }
+
+            $output = ob_get_contents(); // Return contents of the output buffer
+
+            ob_end_clean(); // Erase the output buffer and turn off buffering
 
             if (NULL !== $this->lock_file_path && !isset($job['always'])) {
                 $this->_removeLockFile($label);
@@ -604,7 +608,7 @@ class Cron
     }
 
     /**
-     * Save the job output to a given file.
+     * Save the output of the last ran job to a given file.
      *
      * This will override $output_file, if specified in the constructor.
      *
@@ -613,7 +617,7 @@ class Cron
      * @return self
      */
 
-    public function output(string $output_file): self
+    public function saveOutput(string $output_file): self
     {
 
         $this->jobs[$this->_thisJobKey()]['file'] = $output_file;

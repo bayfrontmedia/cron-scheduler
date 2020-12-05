@@ -35,13 +35,13 @@ First, create a file to be used to schedule jobs, for example `cron.php`. The fi
 Then, add a new entry to your crontab to run the file every minute:
 
 ```
-* * * * * path/to/php/bin path/to/cron.php 1>> /dev/null 2>&1
+* * * * * path/to/php/bin path/to/cron.php > /dev/null 2>&1
 ```
 
-Or, to save anything `echoed` from the jobs to a log file, specify a file path, such as:
+Or, to save the output from the jobs to a log file, specify a file path, such as:
 
 ```
-* * * * * path/to/php/bin path/to/cron.php 1>> /path/to/cron-`date +\%Y-\%m-\%d`.log 2>&1
+* * * * * path/to/php/bin path/to/cron.php >> /path/to/cron-`date +\%Y-\%m-\%d`.log 2>&1
 ```
 
 Now, your server will check the file every minute, and Cron Scheduler will only run the jobs that are due, according to their schedule.
@@ -57,8 +57,8 @@ These files are created for each job once it begins, and deleted once it complet
 Jobs will be skipped when a lock file exists, even if it is due to run.
 If `$lock_file_path === NULL`, lock files will never be created, and all jobs will be allowed to overlap.
 
-When an `$output_file` is specified, anything `returned` from the jobs that run will be saved to this file, unless a custom file is specified specifically for that job (see [output](#output)).
-To save anything `echoed` from the jobs, a log file should be specified in the crontab (see above).
+When an `$output_file` is specified, any output from the jobs that run will be saved to this file, unless a custom file is specified specifically for that job (see [saveOutput](#saveoutput)).
+This has the same effect as specifying a log file in the crontab (see above).
 
 The constructor may throw a `Bayfront\CronScheduler\FilesystemException` exception.
 
@@ -70,7 +70,7 @@ use Bayfront\CronScheduler\FilesystemException;
 
 try {
 
-    $cron = new Cron('path/to/temp/dir', 'path/to/output/file.txt');
+    $cron = new Cron('path/to/temp/dir', 'path/to/output/file.log');
 
 } catch (FilesystemException $e) {
     die($e->getMessage());
@@ -87,7 +87,7 @@ try {
 - [php](#php)
 - [call](#call)
 - [always](#always)
-- [output](#output)
+- [saveOutput](#saveoutput)
 - [when](#when)
 
 **Job schedule**
@@ -416,11 +416,11 @@ try {
 
 <hr />
 
-### output
+### saveOutput
 
 **Description:**
 
-Save the job output to a given file.
+Save the output of the last ran job to a given file.
 
 This will override `$output_file`, if specified in the constructor.
 
@@ -437,7 +437,7 @@ This will override `$output_file`, if specified in the constructor.
 ```
 try {
 
-    $cron->php('job-name', 'path/to/php/file.php')->output('path/to/save/output.txt');
+    $cron->php('job-name', 'path/to/php/file.php')->saveOutput('path/to/save/output.log');
 
 } catch (LabelExistsException $e) {
     die($e->getMessage());
