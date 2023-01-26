@@ -1,6 +1,6 @@
 {
   "name": "bayfrontmedia/cron-scheduler",
-  "description": "A flexible framework agnostic cron job scheduler using human-readable expressions.",
+  "description": "A flexible framework-agnostic cron job scheduler using human-readable expressions.",
   "homepage": "https://github.com/bayfrontmedia/cron-scheduler",
   "license" : "MIT",
   "type": "library",
@@ -25,9 +25,9 @@
     "preferred-install": "dist"
   },
   "require": {
-    "php": ">=7.1.0",
-    "bayfrontmedia/php-string-helpers": "^1.0.0",
-    "dragonmantank/cron-expression": "3.1.*"
+    "php": "^8.0",
+    "bayfrontmedia/php-string-helpers": "^2.0",
+    "dragonmantank/cron-expression": "3.3.*"
   },
   "autoload": {
     "psr-4": {

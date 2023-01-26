@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @package cron-scheduler
- * @link https://github.com/bayfrontmedia/cron-scheduler
- * @author John Robinson <john@bayfrontmedia.com>
- * @copyright 2020 Bayfront Media
- */
-
 namespace Bayfront\CronScheduler;
 
 use Bayfront\StringHelpers\Str;
@@ -17,9 +10,9 @@ use Exception;
 class Cron
 {
 
-    protected $lock_file_path; // Path to directory in which to save lock files.
+    protected ?string $lock_file_path; // Path to directory in which to save lock files.
 
-    protected $output_file; // File to save output.
+    protected ?string $output_file; // File to save output.
 
     /**
      * Cron constructor.
@@ -49,7 +42,7 @@ class Cron
 
     }
 
-    protected $jobs = []; // Scheduled cron jobs
+    protected array $jobs = []; // Scheduled cron jobs
 
     /**
      * Return scheduled cron jobs.
@@ -76,7 +69,7 @@ class Cron
      * @throws SyntaxException
      */
 
-    public function getPreviousDate(string $label, string $date_format = 'Y-m-d H:i:s')
+    public function getPreviousDate(string $label, string $date_format = 'Y-m-d H:i:s'): string
     {
 
         if (!isset($this->getJobs()[$label]['at'])) {
@@ -109,7 +102,7 @@ class Cron
      * @throws SyntaxException
      */
 
-    public function getNextDate(string $label, string $date_format = 'Y-m-d H:i:s')
+    public function getNextDate(string $label, string $date_format = 'Y-m-d H:i:s'): string
     {
 
         if (!isset($this->getJobs()[$label]['at'])) {
@@ -209,13 +202,13 @@ class Cron
     /**
      * Checks if job is due.
      *
-     * @param string|DateTimeInterface
+     * @param DateTimeInterface|string $current_time
      * @param string $at
      *
      * @return bool
      */
 
-    private function _jobIsDue($current_time, string $at): bool
+    private function _jobIsDue(DateTimeInterface|string $current_time, string $at): bool
     {
 
         $cron = new CronExpression($at);
@@ -296,16 +289,16 @@ class Cron
     /**
      * Validates correct format of cron range.
      *
-     * @param string|int $value
+     * @param int|string $value
      * @param int $min
      * @param int $max
      *
-     * @return string|int
+     * @return float|int|string
      *
      * @throws SyntaxException
      */
 
-    private function _validateCronRange($value, int $min, int $max)
+    private function _validateCronRange(int|string $value, int $min, int $max): float|int|string
     {
         if ($value === '*') {
             return '*';
@@ -324,18 +317,18 @@ class Cron
     /**
      * Validates correct format of cron values
      *
-     * @param string|int $minute ("*" or numeric value)
-     * @param string|int $hour ("*" or numeric value)
-     * @param string|int $day ("*" or numeric value)
-     * @param string|int $month ("*" or numeric value)
-     * @param string|int $weekday ("*" or numeric value)
+     * @param int|string $minute ("*" or numeric value)
+     * @param int|string $hour ("*" or numeric value)
+     * @param int|string $day ("*" or numeric value)
+     * @param int|string $month ("*" or numeric value)
+     * @param int|string $weekday ("*" or numeric value)
      *
      * @return array
      *
      * @throws SyntaxException
      */
 
-    private function _validateCronSequence($minute = '*', $hour = '*', $day = '*', $month = '*', $weekday = '*'): array
+    private function _validateCronSequence(int|string $minute = '*', int|string $hour = '*', int|string $day = '*', int|string $month = '*', int|string $weekday = '*'): array
     {
 
         return [
@@ -359,7 +352,7 @@ class Cron
      * @throws FilesystemException
      */
 
-    private function _saveOutputToFile($output, string $file): void
+    private function _saveOutputToFile(mixed $output, string $file): void
     {
 
         $dir = rtrim(str_replace(basename($file), '', $file), '/');
@@ -383,7 +376,7 @@ class Cron
     /**
      * Runs all queued jobs that are due.
      *
-     * @param string|DateTimeInterface $current_time (Override current time by passing a DateTime instance with a
+     * @param DateTimeInterface|string $current_time (Override current time by passing a DateTime instance with a
      *     defined time)
      *
      * @return array (Array of data relating to the completed jobs)
@@ -391,7 +384,7 @@ class Cron
      * @throws FilesystemException
      */
 
-    public function run($current_time = 'now'): array
+    public function run(DateTimeInterface|string $current_time = 'now'): array
     {
 
         $return = [
@@ -401,7 +394,7 @@ class Cron
 
         /*
          * Due jobs will be saved to this array before they are ran.
-         * Then, each job on this array will be ran.
+         * Then, each job on this array will be run.
          *
          * This prevents issues from occurring where a job may take some time to complete,
          * and by the time it completes, the next job is no longer "due".
@@ -987,7 +980,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 1 *';
 
@@ -1011,7 +1004,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 2 *';
 
@@ -1035,7 +1028,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 3 *';
 
@@ -1059,7 +1052,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 4 *';
 
@@ -1083,7 +1076,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 5 *';
 
@@ -1107,7 +1100,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 6 *';
 
@@ -1131,7 +1124,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 7 *';
 
@@ -1155,7 +1148,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 8 *';
 
@@ -1179,7 +1172,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 9 *';
 
@@ -1203,7 +1196,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 10 *';
 
@@ -1227,7 +1220,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 11 *';
 
@@ -1251,7 +1244,7 @@ class Cron
 
         $time = $this->_timeToArray($time);
 
-        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day, '*');
+        $c = $this->_validateCronSequence($time['minute'], $time['hour'], $day);
 
         $this->jobs[$this->_thisJobKey()]['at'] = $c['minute'] . ' ' . $c['hour'] . ' ' . $c['day'] . ' 12 *';
 

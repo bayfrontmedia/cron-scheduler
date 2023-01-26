@@ -1,6 +1,6 @@
 ## Cron Scheduler
 
-A flexible framework agnostic cron job scheduler using human-readable expressions.
+A flexible framework-agnostic cron job scheduler using human-readable expressions.
 
 - [License](#license)
 - [Author](#author)
@@ -21,7 +21,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ## Requirements
 
-* PHP >= 7.1.0
+* PHP `^8.0`
 
 ## Installation
 
