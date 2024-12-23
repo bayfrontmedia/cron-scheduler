@@ -23,7 +23,7 @@ class Cron
      * @throws FilesystemException
      */
 
-    public function __construct(string $lock_file_path = NULL, string $output_file = NULL)
+    public function __construct(?string $lock_file_path = NULL, ?string $output_file = NULL)
     {
 
         if (NULL !== $lock_file_path) {
